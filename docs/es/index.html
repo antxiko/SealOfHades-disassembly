@@ -1,0 +1,98 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Seal of Hades - desensamblado comentado</title>
+<style>
+:root{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;--linea:#23262e;
+  --rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+@media (prefers-color-scheme:light){:root{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;
+  --panel:#f7f6f2;--linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}}
+:root[data-theme="dark"]{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;
+  --linea:#23262e;--rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+:root[data-theme="light"]{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;--panel:#f7f6f2;
+  --linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);padding:0 1.25rem 6rem;
+  font:15px/1.7 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.w{max-width:1120px;margin:0 auto}
+.n{max-width:68ch}
+h1,h2,h3,h4{font-weight:400;text-wrap:balance}
+a{color:var(--cyan)}
+img{image-rendering:pixelated;max-width:100%;height:auto;display:block}
+header.top{display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  padding:4rem 0 2rem;text-align:center}
+header.top img{width:min(100%,642px)}
+.claim{max-width:60ch;color:var(--suave);font-size:1.05rem}
+.claim b{color:var(--tinta);font-weight:400}
+.ficha{display:flex;flex-wrap:wrap;justify-content:center;gap:0 1.5rem;width:100%;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:.85rem 0}
+.ficha b{color:var(--rojo);font-weight:400}
+nav{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:center;padding:1.25rem 0;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--suave);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus{color:var(--tinta);border-bottom-color:var(--rojo)}
+nav.docs{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  margin-bottom:1rem}
+section{margin-top:4.5rem;scroll-margin-top:1rem}
+section>h2{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;
+  border-left:3px solid var(--rojo);padding-left:.9rem;margin:0 0 1.5rem}
+.cifras{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.cifra{background:var(--panel);padding:1.1rem}
+.cifra b{display:block;font-size:1.7rem;color:var(--oro);font-weight:400;
+  font-variant-numeric:tabular-nums;line-height:1.2}
+.cifra span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--suave)}
+.hall{border-top:1px solid var(--linea);padding-top:1.75rem;margin-top:2.5rem}
+.hall:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.hall h3{margin:0 0 .75rem;font-size:1.15rem;color:var(--rojo)}
+.hall h4{color:var(--oro);margin:1.5rem 0 .5rem;font-size:.95rem}
+.hall p{margin:0 0 1rem}
+pre.asm{background:var(--panel);border-left:2px solid var(--verde);margin:1.25rem 0;
+  padding:1rem 1.1rem;overflow-x:auto;font-size:13px;line-height:1.6;color:var(--tinta)}
+.par{display:grid;gap:1.25rem;grid-template-columns:1fr}
+@media(min-width:820px){.par{grid-template-columns:1fr 1fr}}
+.par figure{margin:0}
+table{border-collapse:collapse;width:100%;margin:1.25rem 0;font-size:13px;display:block;
+  overflow-x:auto}
+th,td{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--linea)}
+th{color:var(--suave);font-weight:400;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+td.num{font-variant-numeric:tabular-nums;color:var(--oro)}
+.nivel{margin-top:2rem}
+.nivel h3{margin:0 0 .9rem;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase}
+.nivel em{color:var(--cyan);font-style:normal}
+.sep{color:var(--suave);margin:0 .6rem}
+.rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.rejilla figure{margin:0;background:var(--panel);box-shadow:0 0 0 1px var(--linea)}
+.rejilla figcaption{display:flex;justify-content:space-between;padding:.45rem .65rem;
+  font-size:11px;color:var(--suave);border-top:1px solid var(--linea)}
+.dir{font-variant-numeric:tabular-nums;color:var(--verde)}
+footer{margin-top:5rem;padding-top:1.5rem;border-top:1px solid var(--linea);
+  color:var(--suave);font-size:12px}
+
+/* Aviso de trabajo en curso: tiene que verse antes que las cifras, porque un
+   100% mal leido hace mas dano que no ponerlo. */
+.aviso{background:#3a2a10;border-left:3px solid var(--oro);margin:1.5rem auto;
+  padding:1rem 1.2rem;max-width:900px;border-radius:4px}
+.aviso p{margin:0;color:var(--tinta);font-size:15px;line-height:1.65}
+.galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;margin:1.5rem 0}
+.galeria figure{margin:0}
+.galeria img{width:100%;height:auto;image-rendering:pixelated;
+  border:1px solid var(--linea);border-radius:3px}
+.galeria figcaption{color:var(--suave);font-size:13px;margin-top:.5rem}
+audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
+</style>
+<header class="top">
+  <img src="data:image/png;base64,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" alt="The Seal of Hades">
+  <p class="claim">Un matamarcianos a pie, hacia arriba: Leon dispara, rompe los bloques del suelo para sacar lo que guardan, vigila el aire y la fuerza, y al final de cada una de las seis escenas vence al guardi&aacute;n de piedra. Si encuentra The Stone of Wisdom en otro slot, empieza m&aacute;s fuerte. El t&iacute;tulo sale de ejecutar la ROM, cotejado con openMSX punto a punto; la partida en GIF, jugada en openMSX; las doce m&uacute;sicas que suenan, de su propio motor, id&eacute;nticas a openMSX cuadro a cuadro.</p>
+  <p class="ficha">Casio - <b>(c) 1986</b> - Cartucho de <b>32 KB</b> (cabecera en 0x4000) - <b>MSX</b> - Volcado <b>fcc6b6b9...</b></p>
+</header>
+<p class="ficha" style="border:1px solid var(--oro);padding:.8em 1em;margin:1.5em 0">
+<b>Aqu&iacute; no hay capturas del juego.</b> El t&iacute;tulo sale de ejecutar la ROM y los GIF son la ROM <b>funcionando en openMSX</b>: en cada cuadro se apuntan la VRAM, la RAM y los registros del VDP, y <b>c&oacute;digo nuestro los pinta</b>.</p>
+<nav><a href="LA-PARTIDA.html">La partida</a><a href="LAS-ESCENAS.html">Las escenas</a><a href="LOS-TEXTOS.html">Los textos</a><a href="LA-MUSICA.html">La m&uacute;sica</a><span style="opacity:.35">|</span><a href="CURIOSIDADES.html">Curiosidades</a><span style="opacity:.35">|</span><a href="POR-DENTRO.html">Por dentro</a><a href="../" style="margin-left:auto;color:var(--oro)">In English</a></nav>
+<section id="numbers">
+  <h2>El cartucho en cifras</h2>
+  <div class="cifras"><div class="cifra"><b>100 %</b><span>del binario explicado</span></div><div class="cifra"><b>612</b><span>rutinas y etiquetas</span></div><div class="cifra"><b>41,5 %</b><span>del listado comentado</span></div><div class="cifra"><b>9.874</b><span>bytes de código</span></div><div class="cifra"><b>22.894</b><span>bytes de datos</span></div><div class="cifra"><b>0</b><span>bytes sin identificar</span></div></div>
+</section>
+<section id="pages"><h2>Lo que hay dentro</h2><div class="hall"><h3>El juego</h3><ul><li><a href="LA-PARTIDA.html">La partida</a>: la presentaci&oacute;n de CASIO, el t&iacute;tulo, los mandos, AIR, POWER y los disparos, los bloques, los corazones y GAME OVER.</li><li><a href="LAS-ESCENAS.html">Las escenas</a>: las seis escenas, sus pantallas, los enemigos, el guardi&aacute;n y el final.</li><li><a href="LOS-TEXTOS.html">Los textos</a>: todos los textos de la ROM, con su traducci&oacute;n.</li><li><a href="LA-MUSICA.html">La m&uacute;sica</a>: las m&uacute;sicas, de su propio motor de sonido y cotejadas con openMSX.</li></ul></div><div class="hall"><h3>Curiosidades</h3><ul><li><a href="CURIOSIDADES.html">Curiosidades</a>: The Stone of Wisdom en otro slot, TAB y CAPS, una demostraci&oacute;n que juega la cabecera, textos sobrantes.</li></ul></div><div class="hall"><h3>Por dentro</h3><ul><li><a href="POR-DENTRO.html">Por dentro</a>: rehacer la ROM, el cartucho, la BIOS que usa, el bucle, el avance de la pantalla, la RAM y las herramientas.</li></ul></div></section>
+<footer><p>Esto es trabajo de documentación y preservación: el código y los gráficos siguen siendo de sus autores y de Casio, y la imagen del cartucho no se distribuye.</p></footer>

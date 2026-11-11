@@ -662,15 +662,15 @@ C 0x82C9 sale: los dibujos de siempre
 L 0x82DE pausa_entra               Entra: los dibujos de 0x5B80 y 0xE100-0xE14F a cero
 C 0x82DE los dibujos de la pausa
 L 0x833B pausa_sprites             Los cuatro sprites de 0xE300 a la tabla
-L 0x8349 sonido_fondo              El sonido de fondo de la escena (efecto de B y C): 2 con 0xE18D; si no, 5 en la escena 1, 4 en la 3, 3 en la 5 y 6 en las demas
-C 0x8349 0xE18D?
+L 0x8349 sonido_fondo              El sonido de fondo de la escena (efecto de B y C): 5 en la escena 1, 4 en la 3, 3 en la 5 y 6 en las demas; con 0xE18D, el 2, pero nadie pone 0xE18D (solo se borra con la RAM)
+C 0x8349 0xE18D (siempre 0)?
 C 0x834F el 2
 C 0x8353 la escena
 C 0x8362 las demas: el 6
 C 0x8366 la 1: el 5
 C 0x836A la 3: el 4
 C 0x836E la 5: el 3
-L 0x8374 muerte                    Sin AIR: con TAB en el titulo (0xE03A), nada (sigue); si no, el arma a 0, POWER - 8 (si pasa de 0x10) y la muerte
+L 0x8374 muerte                    La muerte (0xE183: un enemigo, una bala, sin AIR o un agujero): con TAB en el titulo (0xE03A), nada (sigue); si no, el arma a 0, POWER - 8 (si pasa de 0x10) y la muerte
 C 0x8374 TAB en el titulo?
 C 0x837A si: no muere
 C 0x8381 el sonido a cero
@@ -724,7 +724,7 @@ C 0x8467 la 6?
 C 0x8469 no: la siguiente
 L 0x846C final                     El final: la escena 0 y una vuelta mas (0xE004), la musica 7, cuatro sprites (0xFC, 0xF8, 0xF4 y 0xF0) que bajan de la Y 0xE0/0xF0 a la 0x40 de 1 en 1 cada 3 cuadros; el texto de 0x8E50 y la musica 7 una y otra vez hasta el boton
 C 0x846C la escena 0
-C 0x8470 una vuelta mas
+C 0x8470 una vuelta mas (0xE004: nadie la lee)
 C 0x8477 la musica 7
 C 0x847C cuatro sprites en 0xE380...
 C 0x8480 ...el primero: Y 0xF0, X 0x58, 0xFC, color 5
@@ -1544,7 +1544,7 @@ L 0xA25C enemigo_d_despacio        Cada 4 cuadros, 1 abajo
 L 0xA26D enemigo_d_mece            32 cuadros a la derecha y 32 a la izquierda (+8)
 L 0xA27B enemigo_d_izq             Izquierda
 L 0xA27E enemigo_d_dibujo          Los dibujos, +8 cada 8 cuadros, y a lo comun
-L 0xA295 enemigo_e                 El enemigo 0x0A, un corazon que baja: sale arriba (X al azar 0x30-0x6F), baja 1 cada 2 cuadros con los dibujos 0x80/0x88; al tocar al protagonista, el arma de velocidad (+0x1E; con dos, el arma + 1 si es menor que 3), el sonido 1, 100 puntos, 0xE199 = 0x80 y todo fuera
+L 0xA295 enemigo_e                 El enemigo 0x0A, una cosa que baja: sale arriba (X al azar 0x30-0x6F), baja 1 cada 2 cuadros con los dibujos 0x80/0x88; al tocar al protagonista, el arma de velocidad (+0x1E; con dos, el arma + 1 si es menor que 3), el sonido 1, 100 puntos, 0xE199 = 0x80 y todo fuera
 C 0xA295 recien salido?
 L 0xA2B7 enemigo_e_baja            Cada 2 cuadros, 1 abajo
 L 0xA2C8 enemigo_e_toca            Los dos sprites en su sitio y los dibujos 0x80/0x88 cada 16 cuadros; si toca al protagonista, lo coge
@@ -1851,7 +1851,7 @@ D 0x8E2E 0x8E36 hiscore           HISCORE: (se copian 7; SCORE, 0x8E30, es su fi
 D 0x8E36 0x8E3F game_over_txt     GAME OVER
 D 0x8E3F 0x8E46 sobra_power       "T;POWER": nadie lo apunta
 D 0x8E46 0x8E50 leon_scene        LEON y SCENE
-D 0x8E50 0x8EBB final_texto       El texto del final: 16, 16, 14, 18, 5, 18 y 20 casillas en kana
+D 0x8E50 0x8EBB final_texto       El texto del final (16, 16, 14, 18, 5, 18 y 20 casillas; las letras de la BIOS con su numero: hiragana 0x86-0x9F y 0xE0-0xFD, katakana 0xA1-0xDF): "わたしは ほしのめがみ エーメ / やみのりゅうおうは さりました / あなたの ゆうきを たたえて / ひかりのしょうごうを さずけます / イルシオン / いつのひにか あなたは もういちど / そのゆうきを ためされるでしょう..."
 D 0x8F41 0x8F47 sobra_8f41        6 bytes que nadie ejecuta (ld hl,0xE600...)
 D 0x8F7C 0x8F90 espacios          20 espacios: la fila en blanco de la presentacion
 D 0x8FBD 0x9000 sobra_8fbd        67 bytes que nadie lee: un jp, "ER    T;MORIYAMA" (un resto de unos creditos) y espacios

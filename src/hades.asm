@@ -1551,8 +1551,8 @@ pausa_sprites:		; Los cuatro sprites de 0xE300 a la tabla
 	ld b,004h		;8341
 	call sprites_vram_uno		;8343
 	jp bucle_sigue		;8346
-sonido_fondo:		; El sonido de fondo de la escena (efecto de B y C): 2 con 0xE18D; si no, 5 en la escena 1, 4 en la 3, 3 en la 5 y 6 en las demas
-	ld a,(0e18dh)		;8349   ; 0xE18D?
+sonido_fondo:		; El sonido de fondo de la escena (efecto de B y C): 5 en la escena 1, 4 en la 3, 3 en la 5 y 6 en las demas; con 0xE18D, el 2, pero nadie pone 0xE18D (solo se borra con la RAM)
+	ld a,(0e18dh)		;8349   ; 0xE18D (siempre 0)?
 	and a			;834c
 	jr z,L_8353		;834d
 	ld a,002h		;834f   ; el 2
@@ -1578,7 +1578,7 @@ L_836E:
 L_8370:
 	call efecto_pide		;8370
 	ret			;8373
-muerte:		; Sin AIR: con TAB en el titulo (0xE03A), nada (sigue); si no, el arma a 0, POWER - 8 (si pasa de 0x10) y la muerte
+muerte:		; La muerte (0xE183: un enemigo, una bala, sin AIR o un agujero): con TAB en el titulo (0xE03A), nada (sigue); si no, el arma a 0, POWER - 8 (si pasa de 0x10) y la muerte
 	ld a,(0e03ah)		;8374   ; TAB en el titulo?
 	and a			;8377
 	jr z,L_8381		;8378
@@ -1687,7 +1687,7 @@ escena_acabada:		; La escena acabada (0xE184), cuando acaba el parpadeo (0xE1C0)
 final:		; El final: la escena 0 y una vuelta mas (0xE004), la musica 7, cuatro sprites (0xFC, 0xF8, 0xF4 y 0xF0) que bajan de la Y 0xE0/0xF0 a la 0x40 de 1 en 1 cada 3 cuadros; el texto de 0x8E50 y la musica 7 una y otra vez hasta el boton
 	xor a			;846c   ; la escena 0
 	ld (0e003h),a		;846d
-	ld a,(0e004h)		;8470   ; una vuelta mas
+	ld a,(0e004h)		;8470   ; una vuelta mas (0xE004: nadie la lee)
 	inc a			;8473
 	ld (0e004h),a		;8474
 	ld a,007h		;8477   ; la musica 7
@@ -2961,8 +2961,10 @@ DATA_leon_scene:
 	defb 01ch,015h,01fh,01eh,010h,023h,013h,015h,01eh,015h	; 8e46  .....#....
 
 ; ----------------------------------------------------------------------
-; DATOS final_texto: El texto del final: 16, 16, 14, 18, 5, 18 y 20 casillas
-;   en kana
+; DATOS final_texto: El texto del final (16, 16, 14, 18, 5, 18 y 20 casillas;
+;   las letras de la BIOS con su numero: hiragana 0x86-0x9F y 0xE0-0xFD,
+;   katakana 0xA1-0xDF): "わたしは ほしのめがみ エーメ / やみのりゅうおうは さりました / あなたの ゆうきを たたえて /
+;   ひかりのしょうごうを さずけます / イルシオン / いつのひにか あなたは もういちど / そのゆうきを ためされるでしょう..."
 ;   0x8e50..0x8ebb  (107 bytes)
 DATA_final_texto:
 	defb 0fch,0e0h,09ch,0eah,010h,0eeh,09ch,0e9h,0f2h,096h,0deh,0f0h,010h,0b4h,0b0h,0d2h	; 8e50  ................
@@ -4695,7 +4697,7 @@ enemigo_d_dibujo:		; Los dibujos, +8 cada 8 cuadros, y a lo comun
 	add a,004h		;a28d   ; +4, el segundo
 	ld (iy+012h),a		;a28f
 	jp enemigo_comun		;a292   ; a lo comun
-enemigo_e:		; El enemigo 0x0A, un corazon que baja: sale arriba (X al azar 0x30-0x6F), baja 1 cada 2 cuadros con los dibujos 0x80/0x88; al tocar al protagonista, el arma de velocidad (+0x1E; con dos, el arma + 1 si es menor que 3), el sonido 1, 100 puntos, 0xE199 = 0x80 y todo fuera
+enemigo_e:		; El enemigo 0x0A, una cosa que baja: sale arriba (X al azar 0x30-0x6F), baja 1 cada 2 cuadros con los dibujos 0x80/0x88; al tocar al protagonista, el arma de velocidad (+0x1E; con dos, el arma + 1 si es menor que 3), el sonido 1, 100 puntos, 0xE199 = 0x80 y todo fuera
 	ld a,(iy+005h)		;a295   ; recien salido?
 	and a			;a298   ; recien salido?
 	jr nz,enemigo_e_baja		;a299   ; no: baja
