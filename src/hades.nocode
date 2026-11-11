@@ -1,0 +1,7 @@
+# Zonas que NO son codigo aunque el trazado pueda entrar en ellas.
+
+# La cabecera: "AB", INIT, STATEMENT, DEVICE, TEXT y seis reservados.
+0x4000 0x4010
+0x9E9D 0x9EBD   # tabla de saltos (16 x 2)
+0x9EF3 0x9F13   # tabla de saltos (16 x 2)
+0xA49B 0xA4BB   # tabla de saltos (16 x 2)
