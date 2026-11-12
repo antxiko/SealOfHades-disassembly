@@ -944,8 +944,8 @@ C 0x9827 cada 8...
 L 0x982D prota_dibujos             Los dibujos de los cuatro sprites: A, A+4, A+8 y A+12
 C 0x982D el primero
 C 0x9830 + 4: el segundo
-C 0x9835 + 8: 0xE310
-C 0x983A + 12: 0xE300
+C 0x9835 + 8: 0xE300 (IX - 0x1E)
+C 0x983A + 12: 0xE310 (IX - 0x0E)
 L 0x9840 prota_coge                Lo cogido (+0x19): 1, POWER + 2; 3, AIR + 2; 6, el arma + 1 (0xE059); 5, POWER + 8; 2 y 4, un poder (color 11 o 6) que dura 3 x 256 cuadros (+0x1A-0x1C)
 C 0x9840 algo cogido?
 C 0x9846 atendido

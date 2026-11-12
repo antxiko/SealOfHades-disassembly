@@ -3312,9 +3312,9 @@ prota_dibujos:		; Los dibujos de los cuatro sprites: A, A+4, A+8 y A+12
 	ld (ix+002h),a		;982d   ; el primero
 	add a,004h		;9830   ; + 4: el segundo
 	ld (ix+012h),a		;9832
-	add a,004h		;9835   ; + 8: 0xE310
+	add a,004h		;9835   ; + 8: 0xE300 (IX - 0x1E)
 	ld (ix-01eh),a		;9837
-	add a,004h		;983a   ; + 12: 0xE300
+	add a,004h		;983a   ; + 12: 0xE310 (IX - 0x0E)
 	ld (ix-00eh),a		;983c
 	ret			;983f
 prota_coge:		; Lo cogido (+0x19): 1, POWER + 2; 3, AIR + 2; 6, el arma + 1 (0xE059); 5, POWER + 8; 2 y 4, un poder (color 11 o 6) que dura 3 x 256 cuadros (+0x1A-0x1C)
