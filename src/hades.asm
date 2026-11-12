@@ -2418,7 +2418,7 @@ puntos_pon:		; Las cinco cifras de los puntos (0xE007) en la fila 4, columna 25,
 	ld de,01839h		;8a27
 	ld bc,00005h		;8a2a
 	jp 0005ch		;8a2d   ; LDIRVM
-puntos_suma:		; Jugando, los puntos + A (BCD, las dos ultimas cifras, 0xE00E) con su acarreo; al pasar de 999999 el record se queda con los puntos; desde 3.000 (0xE00D 0x30 o mas; en pantalla 30.000), 0xE03A = 1 una vez; y las cifras, el record y el marcador
+puntos_suma:		; Jugando, los puntos + A (BCD, las dos ultimas cifras, 0xE00E) con su acarreo; al pasar de 999999 el record se queda con los puntos; desde 3.000 (0xE00D 0x30 o mas; en pantalla 30.000), un LEON mas, una vez (0xE02D); y las cifras, el record y el marcador
 	ld b,a			;8a30   ; lo que se suma
 	ld a,(0e000h)		;8a31   ; jugando?
 	and a			;8a34
