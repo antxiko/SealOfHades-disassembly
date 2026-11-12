@@ -5,6 +5,20 @@ at 0x4068: one pointer per scene and eleven per screen). Each screen is built in
 -rectangles, fills, the side border, drawings and objects- and comes in from the top row by row as Leon moves on
 (`pantalla_monta`, 0x9B89). Scene 6 repeats almost every screen of scene 2.
 
+## The maps
+
+All six scenes, each with its eleven screens bottom to top (Leon climbs and the exit is at the top), at half size.
+They are **drawn by running the ROM** (`tools/mapas.py`): `escena_empieza` (0x814A) sets the scene's tiles and
+colours, `pantalla_monta` (0x9B89) builds each screen in RAM and `casillas_cambia` (0x8635) sets its tile set. The RAM
+screen runs **bottom to top** (its row 0 is the bottom one). No scoreboard, sprites or moving things.
+
+Check against the forced recording: the screens built here are the same ones the game holds in RAM, and on one frame
+in five what is visible has to be the slice of "the previous and the new one" the window (0xE190) points to: of 738
+frames from scenes 4, 5 and 6, 482 come out **identical** and the median is 0 differing tiles. Scenes 1 to 3 are not
+checked: the recording does not get past the first screen on 1 and never reaches 2 and 3.
+
+![The six scenes](imagenes/mapas.png)
+
 ## What is on the ground
 
 | object | what it is |

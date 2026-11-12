@@ -5,6 +5,21 @@ tabla de 0x4068: un puntero por escena y once por pantalla). Cada pantalla se mo
 descripci&oacute;n -rect&aacute;ngulos, rellenos, el borde de los lados, dibujos y objetos- y entra por arriba fila a
 fila mientras Leon avanza (`pantalla_monta`, 0x9B89). La escena 6 repite casi todas las pantallas de la 2.
 
+## Los mapas
+
+Las seis escenas enteras, cada una con sus once pantallas de abajo arriba (Leon sube y la salida está arriba), a la
+mitad de tamaño. Están **pintadas ejecutando la ROM** (`tools/mapas.py`): `escena_empieza` (0x814A) pone las casillas
+y los colores de la escena, `pantalla_monta` (0x9B89) monta cada pantalla en la RAM y `casillas_cambia` (0x8635)
+pone su juego de casillas. La pantalla de la RAM va **de abajo arriba** (su fila 0 es la de abajo). Sin marcador,
+sprites ni lo que se mueve.
+
+Cotejo con la grabación forzada: las pantallas montadas aquí son las mismas que tiene el juego en su RAM, y en un
+cuadro de cada cinco lo visible tiene que ser el trozo de «la anterior y la nueva» que dice la ventana (0xE190): de
+738 cuadros de las escenas 4, 5 y 6, 482 salen **iguales** y la mediana es 0 casillas distintas. Las escenas 1 a 3
+no se cotejan: la grabación no pasa de la primera pantalla en la 1 ni llega a la 2 y la 3.
+
+![Las seis escenas](../imagenes/mapas.png)
+
 ## Lo que hay en el suelo
 
 | objeto | qu&eacute; es |
